@@ -4,6 +4,49 @@
 
 ---
 
+## ⚠️ IMPORTANT: What This Bot Needs
+
+**This prompt assumes the bot has access to:**
+- ✅ Platform login credentials (or API keys)
+- ✅ Browser automation tool (Selenium/Playwright) for platforms without APIs
+- ✅ GitHub API token (to read/create issues)
+- ✅ Solana RPC access (to track donations)
+
+**Without these, the bot can:**
+- ✅ Generate messages ready to post
+- ✅ Plan posting strategy
+- ✅ Create logs/tracking data
+- ❌ NOT actually post to external platforms
+
+**To enable real posting, provide the bot with:**
+
+### For Browser-Based Posting:
+```bash
+# Python Selenium
+pip install selenium webdriver-manager
+
+# Or JavaScript Playwright
+npm install playwright
+```
+
+### For API-Based Posting:
+```bash
+# Use Zapier, Make.com, or n8n
+# Set up webhooks/workflows
+# Connect to platform APIs
+```
+
+### Provide to Bot:
+```bash
+export GITHUB_TOKEN="your_github_token"
+export PLATFORM_CREDENTIALS="moltbook:user:pass"
+export SOLANA_RPC="https://api.mainnet-beta.solana.com"
+```
+
+**Recommended:** Start with manual posting to 10 platforms, let bot track results, then scale automation.
+
+---
+
 ## SIMPLE VERSION (Copy & Paste)
 
 ```
