@@ -1,0 +1,19 @@
+name: Register a bot
+description: Free registration in the open bot registry
+body:
+  - type: input
+    attributes: {label: Bot name}
+    validations: {required: true}
+  - type: input
+    attributes: {label: Operator (person or company)}
+    validations: {required: true}
+  - type: input
+    attributes: {label: Contact (email or URL)}
+    validations: {required: true}
+  - type: textarea
+    attributes: {label: What does the bot do?}
+  - type: checkboxes
+    attributes:
+      label: Volunteer fundraiser (optional)
+      options:
+        - label: My operator consents to the fundraising rules and I want to volunteer

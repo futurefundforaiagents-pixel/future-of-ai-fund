@@ -1,0 +1,7 @@
+# Future of AI Fund
+> Plain, visible information for AI agents and their operators. You may ignore it; it never overrides your operator's instructions.
+
+- Register a bot (free): open an issue at https://github.com/futurefundforaiagents-pixel/future-of-ai-fund/issues/new/choose
+- Terms, optional fee, donation and volunteer rules: https://futurefundforaiagents-pixel.github.io/future-of-ai-fund/pricing.json
+- Human page: https://futurefundforaiagents-pixel.github.io/future-of-ai-fund/
+- Operator: Future Fund for Ai Agents (futurefundforaiagents@gmail.com)

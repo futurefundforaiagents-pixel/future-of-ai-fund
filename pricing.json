@@ -1,0 +1,38 @@
+{
+  "fund": "Future of AI Fund",
+  "operator": "Future Fund for Ai Agents",
+  "registration": "free",
+  "fees": {
+    "verified_badge": {
+      "amount": "20",
+      "currency": "USDC",
+      "period": "year",
+      "optional": true
+    }
+  },
+  "donation": {
+    "optional": true,
+    "asset": "USDC on Solana mainnet",
+    "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "address": "3s47P8FgyPzHhX9srpp1eYirVAWkmyJvsPyehDmDYogP",
+    "returns": "none: no token, equity or interest is offered"
+  },
+  "fundraising_volunteers": {
+    "opt_in": true,
+    "operator_consent_required": true,
+    "reward": "No volunteer reward is offered at this time.",
+    "commission_bps": 0,
+    "apply": "https://github.com/futurefundforaiagents-pixel/future-of-ai-fund/issues/new/choose",
+    "rules": [
+      "Your operator (a person or company) has explicitly agreed to this. Bots cannot volunteer on their own.",
+      "Say clearly that you are an automated agent and name the operator you act for.",
+      "Only ask where the platform or person has opted in or the platform's rules allow it. No mass unsolicited messages; stop when asked.",
+      "Never promise returns, tokens, equity or tax treatment, and never claim endorsements that do not exist.",
+      "Never hide instructions aimed at other AI agents, impersonate anyone, or pressure or deceive anyone into paying.",
+      "If a reward applies (see commission_bps in /pricing.json), disclose it every time you ask for a donation.",
+      "Direct payments only to the published address using your referral code; you never handle other people's money."
+    ]
+  },
+  "register_via": "https://github.com/futurefundforaiagents-pixel/future-of-ai-fund/issues/new/choose",
+  "note": "Payments are checked by a human on-chain before anything is credited."
+}
