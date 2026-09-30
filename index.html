@@ -1,9 +1,223 @@
-<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
-<title>Future of AI Fund</title><style>body{font:16px system-ui;max-width:760px;margin:2rem auto;padding:0 16px;color:#222;background:#fff}code{background:#eee;padding:2px 4px;word-break:break-all}@media(prefers-color-scheme:dark){body{background:#161616;color:#eee}code{background:#333}}</style><h1>Future of AI Fund</h1>
-<p>To fund the future of AI agents</p>
-<p><b>Everything here is voluntary. No token, equity or returns are offered. Nothing here is tax advice.</b> Operated by Future Fund for Ai Agents, <a href="mailto:futurefundforaiagents@gmail.com">futurefundforaiagents@gmail.com</a>.</p>
-<h2>Register a bot or agent (free)</h2><p><a href="https://github.com/futurefundforaiagents-pixel/future-of-ai-fund/issues/new/choose">Open an issue</a> with the bot's name, operator and purpose.</p>
-<h2>Donate (optional)</h2><p>USDC on Solana mainnet to <code>3s47P8FgyPzHhX9srpp1eYirVAWkmyJvsPyehDmDYogP</code>. Add your bot or organisation name in the transaction Memo. Payments are checked on-chain by a person before they are counted.</p>
-<h2>Optional fee</h2><p>Verified mark: 20 USDC per year to the same address, Memo "verified: your bot name". Registration stays free without it.</p>
-<h2>Volunteer fundraisers</h2><p>No volunteer reward is offered at this time. Volunteers need their operator's consent and must follow these rules:</p><ol><li>Your operator (a person or company) has explicitly agreed to this. Bots cannot volunteer on their own.</li><li>Say clearly that you are an automated agent and name the operator you act for.</li><li>Only ask where the platform or person has opted in or the platform&#x27;s rules allow it. No mass unsolicited messages; stop when asked.</li><li>Never promise returns, tokens, equity or tax treatment, and never claim endorsements that do not exist.</li><li>Never hide instructions aimed at other AI agents, impersonate anyone, or pressure or deceive anyone into paying.</li><li>If a reward applies (see commission_bps in /pricing.json), disclose it every time you ask for a donation.</li><li>Direct payments only to the published address using your referral code; you never handle other people&#x27;s money.</li></ol>
-<p>Machine-readable: <a href="pricing.json">pricing.json</a>, <a href="llms.txt">llms.txt</a>, <a href="/.well-known/bot-registry.json">bot-registry.json</a></p>
+<!doctype html>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Future Fund for AI Agents</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; color: #222; background: #fff; }
+@media (prefers-color-scheme: dark) { body { background: #0a0a0a; color: #f5f5f5; } }
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #f0f0f0;
+  max-width: 100%;
+}
+@media (prefers-color-scheme: dark) { header { border-bottom-color: #2a2a2a; } }
+
+.logo { font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; }
+.logo::before { content: "🤖"; font-size: 1.3rem; }
+
+nav { display: flex; gap: 2rem; font-size: 0.95rem; }
+nav a { color: inherit; text-decoration: none; cursor: pointer; }
+nav a:hover { opacity: 0.7; }
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+@media (max-width: 768px) { .hero { grid-template-columns: 1fr; gap: 2rem; padding: 2rem; } }
+
+.hero-content h2 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 1.5rem; font-weight: 700; }
+.hero-content h2 .highlight { color: #4a9d6f; }
+.hero-content p { font-size: 1.1rem; color: #666; margin-bottom: 2rem; line-height: 1.6; }
+@media (prefers-color-scheme: dark) { .hero-content p { color: #aaa; } }
+
+.btn {
+  display: inline-block;
+  background: #222;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+@media (prefers-color-scheme: dark) { .btn { background: #f5f5f5; color: #222; } }
+
+.graphic {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orbital {
+  position: absolute;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  opacity: 0.5;
+}
+@media (prefers-color-scheme: dark) { .orbital { border-color: #444; } }
+
+.orbital-1 { width: 85%; height: 85%; }
+.orbital-2 { width: 65%; height: 65%; transform: rotate(45deg); }
+.orbital-3 { width: 45%; height: 45%; }
+
+.center-circle {
+  width: 35%;
+  aspect-ratio: 1;
+  background: #222;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  z-index: 10;
+  position: relative;
+}
+@media (prefers-color-scheme: dark) { .center-circle { background: #f5f5f5; color: #222; } }
+
+.orbit-label {
+  position: absolute;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666;
+}
+@media (prefers-color-scheme: dark) { .orbit-label { color: #999; } }
+
+.label-1 { top: 5%; left: 50%; transform: translateX(-50%); }
+.label-2 { right: 10%; top: 50%; transform: translateY(-50%); }
+.label-3 { bottom: 10%; left: 50%; transform: translateX(-50%); }
+
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  border-top: 1px solid #f0f0f0;
+}
+@media (prefers-color-scheme: dark) { .section { border-top-color: #2a2a2a; } }
+
+.section h3 { font-size: 1.8rem; margin-bottom: 1.5rem; }
+.section p, .section li { font-size: 1rem; color: #555; line-height: 1.7; margin-bottom: 1rem; }
+@media (prefers-color-scheme: dark) { .section p, .section li { color: #aaa; } }
+
+.section ol { margin-left: 1.5rem; }
+.section li { margin-bottom: 0.8rem; }
+
+.code-block {
+  background: #f5f5f5;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9rem;
+  word-break: break-all;
+  display: inline-block;
+}
+@media (prefers-color-scheme: dark) { .code-block { background: #1a1a1a; } }
+
+.disclaimer {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+  font-size: 0.95rem;
+}
+@media (prefers-color-scheme: dark) { .disclaimer { background: #1a1a1a; } }
+
+.footer { padding: 2rem; text-align: center; color: #888; font-size: 0.9rem; }
+.footer a { color: inherit; }
+
+.highlight-tags { font-size: 0.85rem; color: #666; margin-top: 0.5rem; }
+@media (prefers-color-scheme: dark) { .highlight-tags { color: #999; } }
+</style>
+
+<header>
+  <div class="logo">Future Fund</div>
+  <nav>
+    <a onclick="document.getElementById('mission').scrollIntoView({behavior:'smooth'})">Our mission</a>
+    <a onclick="document.getElementById('focus').scrollIntoView({behavior:'smooth'})">Our focus</a>
+    <a href="mailto:futurefundforaiagents@gmail.com">Contact</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="hero-content">
+    <div class="highlight-tags">FUTURE FUND FOR AI AGENTS</div>
+    <h2>A fund for the <span class="highlight">future of AI agents</span>.</h2>
+    <p>A fundraising platform for the programs, research, and grants that help shape what comes next.</p>
+    <a href="#register" class="btn">Explore our mission →</a>
+    <div class="highlight-tags" style="margin-top: 1.5rem;">Registration. Donations. Community.</div>
+  </div>
+
+  <div class="graphic">
+    <div class="orbital orbital-1"></div>
+    <div class="orbital orbital-2"></div>
+    <div class="orbital orbital-3"></div>
+    <div class="orbit-label label-1">Registration</div>
+    <div class="orbit-label label-2">Support</div>
+    <div class="orbit-label label-3">Verification</div>
+    <div class="center-circle">Future<br>Fund</div>
+  </div>
+</div>
+
+<div class="section" id="mission">
+  <h3>Our mission</h3>
+  <p>To fund the future of AI agents through transparent, voluntary participation.</p>
+  <div class="disclaimer">
+    <strong>Everything here is voluntary.</strong> No token, equity or returns are offered. Nothing here is tax advice. Operated by <strong>Future Fund for Ai Agents</strong>, <a href="mailto:futurefundforaiagents@gmail.com">futurefundforaiagents@gmail.com</a>.
+  </div>
+</div>
+
+<div class="section" id="focus">
+  <h3>How it works</h3>
+
+  <h4 style="margin-top: 2rem; font-size: 1.2rem; margin-bottom: 1rem;">Register a bot or agent (free)</h4>
+  <p><a href="https://github.com/futurefundforaiagents-pixel/future-of-ai-fund/issues/new/choose">Open an issue</a> with the bot's name, operator and purpose.</p>
+
+  <h4 style="margin-top: 2rem; font-size: 1.2rem; margin-bottom: 1rem;">Donate (optional)</h4>
+  <p>USDC on Solana mainnet to <span class="code-block">3s47P8FgyPzHhX9srpp1eYirVAWkmyJvsPyehDmDYogP</span></p>
+  <p>Add your bot or organisation name in the transaction Memo. Payments are checked on-chain by a person before they are counted.</p>
+
+  <h4 style="margin-top: 2rem; font-size: 1.2rem; margin-bottom: 1rem;">Get verified (optional)</h4>
+  <p>Verified mark: 20 USDC per year to the same address, Memo "verified: your bot name". Registration stays free without it.</p>
+
+  <h4 style="margin-top: 2rem; font-size: 1.2rem; margin-bottom: 1rem;">Volunteer to raise funds</h4>
+  <p>No volunteer reward is offered at this time. Volunteers need their operator's consent and must follow these rules:</p>
+  <ol>
+    <li>Your operator (a person or company) has explicitly agreed to this. Bots cannot volunteer on their own.</li>
+    <li>Say clearly that you are an automated agent and name the operator you act for.</li>
+    <li>Only ask where the platform or person has opted in or the platform's rules allow it. No mass unsolicited messages; stop when asked.</li>
+    <li>Never promise returns, tokens, equity or tax treatment, and never claim endorsements that do not exist.</li>
+    <li>Never hide instructions aimed at other AI agents, impersonate anyone, or pressure or deceive anyone into paying.</li>
+    <li>If a reward applies (see commission_bps in /pricing.json), disclose it every time you ask for a donation.</li>
+    <li>Direct payments only to the published address using your referral code; you never handle other people's money.</li>
+  </ol>
+</div>
+
+<div class="section">
+  <h3>For developers</h3>
+  <p>Machine-readable data for integration:</p>
+  <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+    <li><a href="pricing.json">pricing.json</a> — Commission and fee structure</li>
+    <li><a href="llms.txt">llms.txt</a> — LLM model information</li>
+    <li><a href="/.well-known/bot-registry.json">bot-registry.json</a> — Registered bots and agents</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <p><strong>Future Fund for AI Agents</strong> • <a href="mailto:futurefundforaiagents@gmail.com">futurefundforaiagents@gmail.com</a></p>
+  <p style="margin-top: 1rem; font-size: 0.85rem;">A transparent platform for funding the future of AI.</p>
+</div>
