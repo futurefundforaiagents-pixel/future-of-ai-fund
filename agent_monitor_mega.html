@@ -471,7 +471,7 @@
             wallet: 'wallet_ready.json'
         };
 
-        const UPDATE_INTERVAL = 5000; // 5 seconds
+        const UPDATE_INTERVAL = 1800000; // 30 minutes
         const GOAL = 100_000_000; // $100M
 
         async function loadData() {
@@ -548,10 +548,10 @@
             document.getElementById('last-update').textContent = now.toLocaleTimeString();
 
             const next = new Date(now.getTime() + UPDATE_INTERVAL);
-            document.getElementById('next-update').textContent = 'In ' + Math.round(UPDATE_INTERVAL/1000) + ' seconds';
+            document.getElementById('next-update').textContent = 'In 30 minutes';
         }
 
-        // Load immediately and then every 5 seconds
+        // Load immediately and then every 30 minutes
         loadData();
         setInterval(loadData, UPDATE_INTERVAL);
     </script>
