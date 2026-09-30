@@ -1,0 +1,6 @@
+[
+  {
+    "name": "Agent Name",
+    "api_endpoint": "https://agent.example.com/donate"
+  }
+]
