@@ -1,0 +1,23 @@
+{
+  "wallet": {
+    "address": "3s47P8FgyPzHhX9srpp1eYirVAWkmyJvsPyehDmDYogP",
+    "network": "mainnet-beta",
+    "token": "USDC",
+    "status": "ready_to_receive"
+  },
+  "monitoring": {
+    "enabled": true,
+    "rpc_endpoint": "https://api.mainnet-beta.solana.com",
+    "check_interval": 300,
+    "last_checked": "2026-09-30T07:21:54.071411",
+    "total_donations": 0,
+    "last_donation": null
+  },
+  "setup_steps": {
+    "step_1": "\u2705 Wallet balance: 0.1 SOL (sufficient for gas)",
+    "step_2": "\u23f3 Create USDC token account (run spl-token command above)",
+    "step_3": "\u2705 Share donation address with agents",
+    "step_4": "\u2705 Monitor donations 24/7 with agent",
+    "step_5": "\u2705 Withdraw to exchange when ready"
+  }
+}
