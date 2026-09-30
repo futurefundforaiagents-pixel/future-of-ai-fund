@@ -220,23 +220,110 @@ class AutonomousFutureFundAgent:
                 except:
                     pass
 
+            # Check for OAuth providers
+            oauth_providers = []
+            oauth_provider_names = {
+                "Google": ["button:has-text('Google')", "a:has-text('Google')", "[class*='google']"],
+                "GitHub": ["button:has-text('GitHub')", "a:has-text('GitHub')", "[class*='github']"],
+                "Discord": ["button:has-text('Discord')", "a:has-text('Discord')", "[class*='discord']"],
+                "Microsoft": ["button:has-text('Microsoft')", "a:has-text('Microsoft')", "[class*='microsoft']"]
+            }
+
+            for provider, selectors in oauth_provider_names.items():
+                for selector in selectors:
+                    try:
+                        if await page.query_selector(selector):
+                            oauth_providers.append(provider)
+                            break
+                    except:
+                        pass
+
             # Return discovered method
             discovery = {
                 "platform": platform_name,
                 "login_type": "email_password" if (email_input and password_input) else "oauth",
                 "email_selector": str(email_selectors[0]) if email_input else None,
                 "password_selector": str(password_selectors[0]) if password_input else None,
+                "oauth_providers": oauth_providers,
                 "discovered_at": datetime.now().isoformat()
             }
 
             self.login_discoveries[platform_name] = discovery
-            logger.info(f"   🔑 Login method: {discovery['login_type']}")
+            login_desc = discovery['login_type']
+            if oauth_providers:
+                login_desc += f" ({', '.join(oauth_providers)})"
+            logger.info(f"   🔑 Login method: {login_desc}")
 
             return discovery
 
         except Exception as e:
             logger.error(f"   ❌ Error discovering login: {e}")
             return None
+
+    async def handle_oauth_flow(self, page: Page, platform_name: str) -> bool:
+        """Intelligently handle OAuth login flows"""
+        logger.info(f"   🔑 Attempting OAuth flow for {platform_name}...")
+
+        try:
+            # Detect available OAuth providers
+            oauth_providers = {
+                "google": ["button:has-text('Google')", "a:has-text('Google')", "button[class*='google' i]"],
+                "github": ["button:has-text('GitHub')", "a:has-text('GitHub')", "button[class*='github' i]"],
+                "discord": ["button:has-text('Discord')", "a:has-text('Discord')", "button[class*='discord' i]"],
+                "github_app": ["button:has-text('GitHub App')", "a:has-text('GitHub App')"]
+            }
+
+            found_oauth = []
+            for provider, selectors in oauth_providers.items():
+                for selector in selectors:
+                    try:
+                        btn = await page.query_selector(selector)
+                        if btn:
+                            found_oauth.append(provider)
+                            logger.info(f"      Found {provider} OAuth")
+                            break
+                    except:
+                        pass
+
+            # Try email verification path first (non-OAuth)
+            email_inputs = await page.query_selector_all("input[type='email']")
+            if email_inputs and self.agent_email:
+                logger.info(f"      Trying direct email registration...")
+                try:
+                    await email_inputs[0].fill(self.agent_email)
+                    await asyncio.sleep(1)
+
+                    # Look for continue/next button
+                    continue_btns = ["button:has-text('Continue')", "button:has-text('Next')", "button[type='submit']"]
+                    for selector in continue_btns:
+                        try:
+                            btn = await page.query_selector(selector)
+                            if btn:
+                                await btn.click()
+                                await asyncio.sleep(2)
+                                logger.info(f"      Email submitted, waiting for next step...")
+
+                                # Check if we got past email step
+                                try:
+                                    await page.wait_for_url("**", timeout=3000)
+                                    logger.info(f"      Successfully proceeded past email step")
+                                    return True
+                                except:
+                                    pass
+                                break
+                        except:
+                            pass
+                except Exception as e:
+                    logger.info(f"      Email path failed: {e}")
+
+            # Record what we found
+            self.login_discoveries[platform_name]["oauth_providers"] = found_oauth
+            logger.warning(f"   ⚠️  OAuth platform (providers: {', '.join(found_oauth) if found_oauth else 'unknown'})")
+            return False
+
+        except Exception as e:
+            logger.error(f"   ❌ OAuth detection error: {e}")
+            return False
 
     async def auto_login(self, page: Page, platform_name: str) -> bool:
         """Automatically login to platform using discovered method"""
@@ -245,12 +332,17 @@ class AutonomousFutureFundAgent:
         try:
             discovery = self.login_discoveries.get(platform_name)
 
-            if not discovery or discovery.get("login_type") == "oauth":
-                logger.warning(f"   ⚠️  OAuth/wallet login required - skipping")
+            if not discovery:
+                logger.warning(f"   ⚠️  No login discovery data")
                 return False
 
-            # Wait for login form
-            await page.wait_for_selector("input[type='email']", timeout=5000)
+            # If OAuth detected, try OAuth flow
+            if discovery.get("login_type") == "oauth":
+                return await self.handle_oauth_flow(page, platform_name)
+
+            # Try email/password login
+            try:
+                await page.wait_for_selector("input[type='email']", timeout=5000)
 
             # Fill email
             email_input = await page.query_selector("input[type='email']")
