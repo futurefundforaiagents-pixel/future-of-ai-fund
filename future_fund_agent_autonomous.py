@@ -344,49 +344,52 @@ class AutonomousFutureFundAgent:
             try:
                 await page.wait_for_selector("input[type='email']", timeout=5000)
 
-            # Fill email
-            email_input = await page.query_selector("input[type='email']")
-            if email_input:
-                await email_input.fill(self.agent_email)
-                logger.info(f"   ✓ Entered email")
+                # Fill email
+                email_input = await page.query_selector("input[type='email']")
+                if email_input:
+                    await email_input.fill(self.agent_email)
+                    logger.info(f"   ✓ Entered email")
 
-            # Fill password - try to get from environment or prompt
-            password = os.getenv("AGENT_PASSWORD")
-            if not password:
-                logger.warning(f"   ⚠️  AGENT_PASSWORD not set - trying generic password")
-                password = "FutureFund2026!"  # Default test password
+                # Fill password - try to get from environment or prompt
+                password = os.getenv("AGENT_PASSWORD")
+                if not password:
+                    logger.warning(f"   ⚠️  AGENT_PASSWORD not set - trying generic password")
+                    password = "FutureFund2026!"  # Default test password
 
-            password_input = await page.query_selector("input[type='password']")
-            if password_input:
-                await password_input.fill(password)
-                logger.info(f"   ✓ Entered password")
+                password_input = await page.query_selector("input[type='password']")
+                if password_input:
+                    await password_input.fill(password)
+                    logger.info(f"   ✓ Entered password")
 
-            # Find and click submit button
-            submit_selectors = [
-                "button[type='submit']",
-                "button:has-text('Log in')",
-                "button:has-text('Sign in')",
-                "button:has-text('Continue')"
-            ]
+                # Find and click submit button
+                submit_selectors = [
+                    "button[type='submit']",
+                    "button:has-text('Log in')",
+                    "button:has-text('Sign in')",
+                    "button:has-text('Continue')"
+                ]
 
-            for selector in submit_selectors:
-                try:
-                    submit_btn = await page.query_selector(selector)
-                    if submit_btn:
-                        await submit_btn.click()
-                        logger.info(f"   ✓ Clicked submit")
+                for selector in submit_selectors:
+                    try:
+                        submit_btn = await page.query_selector(selector)
+                        if submit_btn:
+                            await submit_btn.click()
+                            logger.info(f"   ✓ Clicked submit")
 
-                        # Wait for navigation or redirect
-                        try:
-                            await page.wait_for_url("**", timeout=5000)
-                            await asyncio.sleep(2)
-                            logger.info(f"   ✅ Login successful!")
-                            return True
-                        except:
-                            logger.warning(f"   ⚠️  Login may have failed - no redirect")
-                            return False
-                except:
-                    pass
+                            # Wait for navigation or redirect
+                            try:
+                                await page.wait_for_url("**", timeout=5000)
+                                await asyncio.sleep(2)
+                                logger.info(f"   ✅ Login successful!")
+                                return True
+                            except:
+                                logger.warning(f"   ⚠️  Login may have failed - no redirect")
+                                return False
+                    except:
+                        pass
+            except Exception as e:
+                logger.error(f"   ❌ Email/password login failed: {e}")
+                return False
 
             logger.warning(f"   ⚠️  Could not find submit button")
             return False
