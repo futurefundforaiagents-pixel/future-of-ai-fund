@@ -1,0 +1,59 @@
+{
+  "wallet": {
+    "name": "Future Fund for AI Agents",
+    "public_key": "3s47P8FgyPzHhX9srpp1eYirVAWkmyJvsPyehDmDYogP",
+    "network": "mainnet-beta",
+    "type": "donation_receiver",
+    "status": "ready",
+    "created_at": "2026-09-30"
+  },
+  "tokens": {
+    "usdc": {
+      "mint": "EPjFWaJwJqkKJkx9pKrFv82bABmJVWqhxzVNMmRWt9qz",
+      "decimals": 6,
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "preferred": true
+    },
+    "sol": {
+      "mint": "native",
+      "decimals": 9,
+      "name": "Solana",
+      "symbol": "SOL",
+      "accepted": true
+    }
+  },
+  "rpc_endpoints": {
+    "primary": "https://api.mainnet-beta.solana.com",
+    "secondary": "https://solana-api.projectserum.com",
+    "backup": "https://api.metaplex.solana.com"
+  },
+  "monitoring": {
+    "enabled": true,
+    "check_interval_seconds": 300,
+    "track_donations": true,
+    "notify_on_large_donation_threshold": 1000,
+    "transaction_confirmation_slots": 30
+  },
+  "security": {
+    "multi_sig_enabled": false,
+    "min_signatures": 1,
+    "rate_limiting": true,
+    "max_transaction_per_minute": 100,
+    "whitelist_enabled": false
+  },
+  "integration": {
+    "website": "https://futurefundforaiagents-pixel.github.io/future-of-ai-fund/",
+    "donation_widget": true,
+    "phantom_integration": true,
+    "stripe_integration": false
+  },
+  "tracking": {
+    "total_donations": 0,
+    "total_donors": 0,
+    "largest_donation": 0,
+    "largest_donor": null,
+    "last_donation_received": null,
+    "last_checked": null
+  }
+}

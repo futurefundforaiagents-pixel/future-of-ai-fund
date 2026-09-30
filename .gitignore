@@ -1,0 +1,4 @@
+﻿solana_wallet.json
+*.key
+*.pem
+private_key*
