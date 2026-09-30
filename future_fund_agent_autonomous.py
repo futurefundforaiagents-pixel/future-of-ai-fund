@@ -7,22 +7,25 @@ Starts immediately and learns platform patterns on its own
 
 import json
 import os
+import sys
 import asyncio
 from datetime import datetime, timedelta
 import requests
 from pathlib import Path
 import logging
 
-# Setup logging
+# Setup logging (with UTF-8 encoding for Windows compatibility)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('agent_autonomous.log'),
-        logging.StreamHandler()
+        logging.FileHandler('agent_autonomous.log', encoding='utf-8'),
+        logging.StreamHandler(sys.stdout)
     ]
 )
 logger = logging.getLogger(__name__)
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8')
 
 try:
     from playwright.async_api import async_playwright, Browser, Page
